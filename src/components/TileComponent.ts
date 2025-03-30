@@ -9,11 +9,13 @@ export class TileComponent {
     tileContainer: HTMLElement;
     isHighPriority: boolean;
     themeManager: any;
+    rowTileLength: number;
 
-    constructor(tile: Tile, isHighPriority: boolean = false, pageId: string) {
+    constructor(tile: Tile, isHighPriority: boolean = false, pageId: string, rowTileLength: number) {
         this.tile = tile;
         this.pageId = pageId;
         this.isHighPriority = isHighPriority;
+        this.rowTileLength = rowTileLength;
         this.themeManager = new ThemeManager();
         this.tileContainer = document.createElement("div");
         this.init();
@@ -36,6 +38,8 @@ export class TileComponent {
             this.tileContainer.style.backgroundImage = `url(${this.tile.BGImageUrl})`;
             this.tileContainer.style.backgroundColor = `rgba(0,0,0, ${this.tile.Opacity / 100})`;
             this.tileContainer.style.backgroundBlendMode = "overlay";
+            this.tileContainer.style.backgroundPosition = "center";
+            this.tileContainer.style.backgroundSize = "cover"
         } else if (this.tile.BGColor) {
             this.tileContainer.style.backgroundColor = this.themeManager.getThemeColor(this.tile.BGColor);
         }
@@ -59,7 +63,10 @@ export class TileComponent {
         title.style.color = this.tile.Color;
         title.style.textAlign = this.tile.Align;
         if (this.tile.Text) {
-            title.innerHTML = this.tile.Text;
+            title.innerHTML = this.wrapTileTitle(this.tile.Text);
+        }
+        if (this.isHighPriority) {
+            title.style.textTransform = "uppercase"
         }
 
         // Add the elements to the container
@@ -75,6 +82,17 @@ export class TileComponent {
                 tileController.navigate();
             }
         });
+    }
+
+    private wrapTileTitle(title: any) {        
+        if (this.rowTileLength === 3) {
+            const words = title.split(" ");
+            if (words.length > 1) {
+                return words[0] + "<br>" + words[1];
+            }
+            return title.replace("<br>", "");
+        }
+        return title;
     }
 
     updateNavigationChain(): void {
@@ -102,5 +120,5 @@ export class TileComponent {
     
     getElement(): HTMLElement {
         return this.tileContainer;
-    }
-}
+    } 
+} 

@@ -27,8 +27,13 @@ export class AppVersionManager {
         }
         this._appVersion = appVersion
         this._isInitialized = true;
+        this.initialiseTheme();
       }
 
+      
+    private initialiseTheme(): void {
+        document.body.style.fontFamily = this.theme?.ThemeFontFamily || "Roboto";
+    }
     get pages(): Page[] | null {
         return this._appVersion?.Pages || null;
     } 

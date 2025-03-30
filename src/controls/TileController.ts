@@ -2,6 +2,7 @@ import { Page } from "../interfaces/Page";
 import { Tile } from "../interfaces/Tile";
 import { TileAction } from "../interfaces/TileAction";
 import { AppVersionManager } from "./AppVersionManager";
+import { MapPageController } from "./MapPageController";
 import { MenuPageController } from "./MenuPageController";
 import { WebLinkController } from "./WebLinkController";
 
@@ -17,6 +18,9 @@ export class TileController {
         if (this.tile.Action.ObjectId) {
             if (this.tile.Action.ObjectType === "Web Link") {
                 const webLinkController = new WebLinkController(this.tile, this.tile.Action.ObjectId);
+                webLinkController.init();
+            } if (this.tile.Action.ObjectType === "Map") {
+                const webLinkController = new MapPageController(this.tile, this.tile.Action.ObjectId);
                 webLinkController.init();
             } else {
                 const menuPageController = new MenuPageController(this.tile.Action.ObjectId);

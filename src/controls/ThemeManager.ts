@@ -29,7 +29,7 @@ export class ThemeManager {
   }
 
   getThemeCtaColor(colorName: string) {  
-    return this.getThemeCtaColors()?.find((color) => color.ColorName === colorName)?.ColorCode;
+    return this.getThemeCtaColors()?.find((color) => color.CtaColorName === colorName)?.CtaColorCode;
   }
 
   getThemeIcon(iconName: string) {  

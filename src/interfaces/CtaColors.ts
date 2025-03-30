@@ -1,5 +1,5 @@
 export interface CtaColors {
-  ColorCode: string;
-  ColorName: string;
-  ColorId: string;
+  CtaColorCode: string;
+  CtaColorName: string;
+  CtaColorId: string;
 }

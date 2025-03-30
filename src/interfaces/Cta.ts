@@ -4,5 +4,5 @@ export interface Cta {
     CtaAction: string;
     CtaBGColor: string;
     CtaButtonType: string;
-    CtaImageUrl: string;
+    CtaButtonImgUrl: string;
 }

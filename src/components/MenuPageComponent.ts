@@ -27,13 +27,22 @@ export class MenuPageComponent {
         menuAppBar.render(this.pageElement);
 
         let pageMapper;
-        if (this.page.PageName === "Calendar") {
+        if (this.page.PageType === "Calendar") {
             pageMapper = new CalendarPageMapper();
-        } else if (this.page.PageName === "My Activity") {
+        } else if (this.page.PageType === "MyActivity") {
             pageMapper = new MyActivityPageMapper();
-        } else if (this.page.PageType === "Menu") {
+        } else if (
+            this.page.PageType === "Menu" ||
+            this.page.PageType === "MyCare" ||
+            this.page.PageType === "MyLiving" ||
+            this.page.PageType === "MyService"
+        ) {
             pageMapper = new MenuPageMapper(this.page);
-        } else if (this.page.PageType === "Content") {
+        } else if (
+            this.page.PageType === "Content" ||
+            this.page.PageType === "Location" ||
+            this.page.PageType === "Reception"
+        ) {
             pageMapper = new ContentPageMapper(this.page);
         }
 

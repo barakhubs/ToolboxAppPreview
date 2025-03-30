@@ -23,9 +23,10 @@ export class HomePageMapper {
         rowElement.id = row.Id;
         
         // Add tiles to the row
+        const rowTileLength = row.Tiles.length;
         row.Tiles.forEach((tile, index) => {
             const isHighPriority = isHighPriorityRow && index === 0;
-            const tileComponent = new TileComponent(tile, isHighPriority, this.pageId);
+            const tileComponent = new TileComponent(tile, isHighPriority, this.pageId, rowTileLength);
             rowElement.appendChild(tileComponent.getElement());
         });
         

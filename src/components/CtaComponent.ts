@@ -9,41 +9,40 @@ export class CtaComponent {
         this.cta = cta;
         this.themeManager = new ThemeManager();
         this.ctaButton = document.createElement("div");
+        this.createButton();
     }
 
     private createButton () {
         if (this.cta.CtaButtonType == "Round") {
-            this.ctaButton = this.createRoundButton();
+            this.createRoundButton();
         } else if (this.cta.CtaButtonType == "FullWidth") {
-            this.ctaButton = this.createFullWidthButton();
+            this.createFullWidthButton();
         } else if (this.cta.CtaButtonType == "Image") {
-            this.ctaButton = this.createImageButton();
+            this.createImageButton();
         } else if (this.cta.CtaButtonType == "Icon") {
-            this.ctaButton = this.createIconButton();
+            this.createIconButton();
         } 
     }
 
-    private createRoundButton (): HTMLElement {
-        const div = document.createElement("div");
-        div.classList.add("tbap-cta-round-button");
+    private createRoundButton (): void {
+        this.ctaButton.classList.add("tbap-cta-round-button");
 
         const buttonDiv = document.createElement("div");
         buttonDiv.classList.add("tbap-cta-round-button__button");
         buttonDiv.style.backgroundColor = this.themeManager.getThemeCtaColor(this.cta.CtaBGColor);
+        buttonDiv.innerHTML = this.getIcon();
+
 
         const label = document.createElement("div");
         label.classList.add("tbap-cta-round-button__label");
         label.innerText = this.cta.CtaLabel;
         
-        div.appendChild(buttonDiv);
-        div.appendChild(label);
-
-        return div;
+        this.ctaButton.appendChild(buttonDiv);
+        this.ctaButton.appendChild(label);
     }
 
-    private createFullWidthButton (): HTMLElement {
-        const div = document.createElement("div");
-        div.classList.add("tbap-cta-plain-button");
+    private createFullWidthButton (): void {
+        this.ctaButton.classList.add("tbap-cta-plain-button");
 
         const buttonDiv = document.createElement("div");
         buttonDiv.classList.add("tbap-cta-plain-button__button");
@@ -54,14 +53,11 @@ export class CtaComponent {
         label.innerText = this.cta.CtaLabel;
         
         buttonDiv.appendChild(label);
-        div.appendChild(buttonDiv);
-
-        return div;
+        this.ctaButton.appendChild(buttonDiv);
     }
 
-    private createIconButton (): HTMLElement {
-        const div = document.createElement("div");
-        div.classList.add("tbap-cta-icon-button");
+    private createIconButton (): void {
+        this.ctaButton.classList.add("tbap-cta-icon-button");
 
         const buttonDiv = document.createElement("div");
         buttonDiv.classList.add("tbap-cta-icon-button__button");
@@ -81,14 +77,11 @@ export class CtaComponent {
         buttonDiv.appendChild(iconSvg);
         buttonDiv.appendChild(label);
         buttonDiv.appendChild(icon);
-        div.appendChild(buttonDiv);
-
-        return div;
+        this.ctaButton.appendChild(buttonDiv);
     }
 
-    private createImageButton (): HTMLElement {
-        const div = document.createElement("div");
-        div.classList.add("tbap-cta-img-button");
+    private createImageButton (): void {
+        this.ctaButton.classList.add("tbap-cta-img-button");
 
         const buttonDiv = document.createElement("div");
         buttonDiv.classList.add("tbap-cta-img-button__button");
@@ -96,7 +89,7 @@ export class CtaComponent {
 
         const img = document.createElement("img");
         img.classList.add("tbap-cta-img-button__img");
-        img.src = this.cta.CtaImageUrl;
+        img.src = this.cta.CtaButtonImgUrl;
 
         const label = document.createElement("div");
         label.classList.add("tbap-cta-img-button__label");
@@ -108,9 +101,7 @@ export class CtaComponent {
         buttonDiv.appendChild(img);
         buttonDiv.appendChild(label);
         buttonDiv.appendChild(icon);
-        div.appendChild(buttonDiv);
-
-        return div;
+        this.ctaButton.appendChild(buttonDiv);
     }
 
     getIcon(): string {
@@ -137,8 +128,9 @@ export class CtaComponent {
                 break;
             case "SiteUrl":
                 return `
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
-                    <pat id="Path_1213" data-name="Path 1213" d="M15.833,4a4.163,4.163,0,0,0-2.958,1.229l-.979.979a4.168,4.168,0,0,0-1.229,2.958,4.1,4.1,0,0,0,.292,1.521L12.042,9.6a2.857,2.857,0,0,1,.792-2.458l.979-.979a2.853,2.853,0,0,1,2.021-.833,2.805,2.805,0,0,1,2,.833,2.85,2.85,0,0,1,0,4.021l-.979.979A2.853,2.853,0,0,1,14.833,12a2.439,2.439,0,0,1-.437-.042l-1.083,1.083a4.1,4.1,0,0,0,1.521.292A4.163,4.163,0,0,0,17.792,12.1l.979-.979A4.168,4.168,0,0,0,20,8.167,4.2,4.2,0,0,0,15.833,4ZM14.188,8.854,8.854,14.188l.958.958,5.333-5.333ZM9.167,10.667A4.163,4.163,0,0,0,6.208,11.9l-.979.979A4.168,4.168,0,0,0,4,15.833,4.2,4.2,0,0,0,8.167,20a4.163,4.163,0,0,0,2.958-1.229l.979-.979a4.168,4.168,0,0,0,1.229-2.958,4.1,4.1,0,0,0-.292-1.521L11.958,14.4a2.857,2.857,0,0,1-.792,2.458l-.979.979a2.853,2.853,0,0,1-2.021.833,2.805,2.805,0,0,1-2-.833,2.85,2.85,0,0,1,0-4.021l.979-.979A2.853,2.853,0,0,1,9.167,12a2.44,2.44,0,0,1,.438.042l1.083-1.083A4.1,4.1,0,0,0,9.167,10.667Z" transform="translate(-4 -4)" fill="#fff"></path>
+                <svg id="i8bct" data-gjs-type="svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                    <path id="Path_1213" data-gjs-type="svg-in" data-name="Path 1213" d="M15.833,4a4.163,4.163,0,0,0-2.958,1.229l-.979.979a4.168,4.168,0,0,0-1.229,2.958,4.1,4.1,0,0,0,.292,1.521L12.042,9.6a2.857,2.857,0,0,1,.792-2.458l.979-.979a2.853,2.853,0,0,1,2.021-.833,2.805,2.805,0,0,1,2,.833,2.85,2.85,0,0,1,0,4.021l-.979.979A2.853,2.853,0,0,1,14.833,12a2.439,2.439,0,0,1-.437-.042l-1.083,1.083a4.1,4.1,0,0,0,1.521.292A4.163,4.163,0,0,0,17.792,12.1l.979-.979A4.168,4.168,0,0,0,20,8.167,4.2,4.2,0,0,0,15.833,4ZM14.188,8.854,8.854,14.188l.958.958,5.333-5.333ZM9.167,10.667A4.163,4.163,0,0,0,6.208,11.9l-.979.979A4.168,4.168,0,0,0,4,15.833,4.2,4.2,0,0,0,8.167,20a4.163,4.163,0,0,0,2.958-1.229l.979-.979a4.168,4.168,0,0,0,1.229-2.958,4.1,4.1,0,0,0-.292-1.521L11.958,14.4a2.857,2.857,0,0,1-.792,2.458l-.979.979a2.853,2.853,0,0,1-2.021.833,2.805,2.805,0,0,1-2-.833,2.85,2.85,0,0,1,0-4.021l.979-.979A2.853,2.853,0,0,1,9.167,12a2.44,2.44,0,0,1,.438.042l1.083-1.083A4.1,4.1,0,0,0,9.167,10.667Z" transform="translate(-4 -4)" fill="#fff">
+                    </path>
                 </svg>
                 `;
                 break;
