@@ -19,9 +19,9 @@ export class TileController {
             if (this.tile.Action.ObjectType === "Web Link") {
                 const webLinkController = new WebLinkController(this.tile, this.tile.Action.ObjectId);
                 webLinkController.init();
-            } if (this.tile.Action.ObjectType === "Map") {
-                const webLinkController = new MapPageController(this.tile, this.tile.Action.ObjectId);
-                webLinkController.init();
+            } else if (this.tile.Action.ObjectType === "Map") {
+                const mapController = new MapPageController(this.tile, this.tile.Action.ObjectId);
+                mapController.init();
             } else {
                 const menuPageController = new MenuPageController(this.tile.Action.ObjectId);
                 menuPageController.init();

@@ -29,6 +29,9 @@ export class ThemeManager {
   }
 
   getThemeCtaColor(colorName: string) {  
+    if (!colorName) {
+      colorName = "CtaColorOne";
+    }
     return this.getThemeCtaColors()?.find((color) => color.CtaColorName === colorName)?.CtaColorCode;
   }
 

@@ -35,7 +35,7 @@ export class MenuAppBarComponent {
             e.preventDefault();
             this.onBackButtonClicked();
         })
-
+        console.log('backButtonSvg', this.pageTitle)
         const h1 = document.createElement('h1');
         h1.classList.add('title');
         h1.innerText = this.truncateText(this.pageTitle || this.page.PageName);
