@@ -197,10 +197,10 @@ export class CtaComponent {
                     window.location.href = `mailto:${ctaAttributes.CtaAction}`;
                     break;
                 case "WebLink":
-                    window.location.href = ctaAttributes.CtaAction ? ctaAttributes.CtaAction : "";
+                    window.open(ctaAttributes.CtaAction ? ctaAttributes.CtaAction : "", "_blank");
                     break;
                 case "Form":
-                    window.location.href = ctaAttributes.CtaAction ? ctaAttributes.CtaAction : "";
+                    window.open(ctaAttributes.CtaAction ? ctaAttributes.CtaAction : "", "_blank");
                     break;
                 default:
                     break;
