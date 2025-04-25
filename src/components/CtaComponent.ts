@@ -189,22 +189,26 @@ export class CtaComponent {
     handleCtaClick(ctaAttributes: CtaAttributes | undefined): void {
         if (ctaAttributes) {
             const type = ctaAttributes.CtaType;
+            const action = ctaAttributes.CtaAction;
+    
             switch (type) {
                 case "Phone":
-                    window.location.href = `tel:${ctaAttributes.CtaAction}`;
+                    window.location.href = `tel:${action}`;
                     break;
                 case "Email":
-                    window.location.href = `mailto:${ctaAttributes.CtaAction}`;
+                    window.location.href = `mailto:${action}`;
                     break;
                 case "WebLink":
-                    window.open(ctaAttributes.CtaAction ? ctaAttributes.CtaAction : "", "_blank");
-                    break;
                 case "Form":
-                    window.open(ctaAttributes.CtaAction ? ctaAttributes.CtaAction : "", "_blank");
+                    if (action) {
+                        const url = action.startsWith('http') ? action : `https://${action}`;
+                        window.open(url, "_blank");
+                    }
                     break;
                 default:
                     break;
             }
         }
     }
+    
 }
