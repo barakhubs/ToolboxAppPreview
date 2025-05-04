@@ -12,4 +12,5 @@ export interface Tile {
     Opacity: number;
     Action: TileAction;
     Size: number;
+    
 }

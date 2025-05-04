@@ -44,7 +44,7 @@ export class InfoPageMapper {
         // const isHighPriorityRow = false;
         // const hasSingleTile = row.Tiles.length === 1;
         const hasSingleTile = row.Tiles?.length === 1;
-        // const isHighPriorityRow = isFirstRow && hasSingleTile;
+        // const isHighPriorityRow  = isFirstRow && hasSingleTile;
         const isHighPriorityRow = hasSingleTile;
 
         // Create a row container

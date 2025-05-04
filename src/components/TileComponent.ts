@@ -23,7 +23,7 @@ export class TileComponent {
     }
 
     private init() {
-        // Apply appropriate CSS class based on priority
+        // Apply appropriate  CSS class based on priority
         this.tileContainer.classList.add("tbap-tile");
         if (this.isHighPriority) {
             // this.tileContainer.classList.add("high-priority-tile");
