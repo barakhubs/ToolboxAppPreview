@@ -15,7 +15,6 @@ export class InfoPageMapper {
     constructor(page: Page) {
         this.pageId = page.PageId;
         this.pageData = page.PageInfoStructure;
-        console.log("this.page", page);
     }
 
     private renderImage(content: InfoType) {
@@ -42,7 +41,6 @@ export class InfoPageMapper {
 
     private renderTileRow(row: InfoType): HTMLElement {
         const isHighPriorityRow = false;
-        // Create a row container
         const rowElement = document.createElement('div');
         rowElement.className = 'tbap-row';
         rowElement.id = row.InfoId;
