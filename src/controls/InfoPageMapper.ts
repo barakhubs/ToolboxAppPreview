@@ -170,7 +170,7 @@ export class InfoPageMapper {
     return rowElement;
   }
 
-  private renderCta(content: InfoType): HTMLElement | null {
+  private renderSingleCta(content: InfoType): HTMLElement | null {
     const ctaContainer = document.createElement("div");
     ctaContainer.className = "tbap-cta-container";
     if (!content.CtaAttributes) return null;
@@ -180,6 +180,36 @@ export class InfoPageMapper {
       ctaElement.handleCtaClick(content.CtaAttributes);
     });
     ctaContainer.appendChild(ctaButton);
+    return ctaContainer;
+  }
+
+  private renderCtaGroup(ctaGroup: InfoType[]): HTMLElement | null {
+    if (ctaGroup.length === 0) return null;
+
+    const ctaContainer = document.createElement("div");
+    ctaContainer.className = "tbap-cta-container";
+
+    // Check if all CTAs in the group are round buttons
+    const allRoundButtons = ctaGroup.every(content => 
+      content.CtaAttributes?.CtaButtonType === "Round"
+    );
+
+    // If we have 2-3 consecutive round buttons, render them in a row
+    if (allRoundButtons && ctaGroup.length >= 2 && ctaGroup.length <= 3) {
+      ctaContainer.classList.add("tbap-cta-container--row");
+    }
+
+    ctaGroup.forEach(content => {
+      if (content.CtaAttributes) {
+        const ctaElement = new CtaComponent(content.CtaAttributes);
+        const ctaButton = ctaElement.getCta();
+        ctaButton.addEventListener("click", () => {
+          ctaElement.handleCtaClick(content.CtaAttributes);
+        });
+        ctaContainer.appendChild(ctaButton);
+      }
+    });
+
     return ctaContainer;
   }
 
@@ -195,16 +225,43 @@ export class InfoPageMapper {
     const columnElement = document.createElement("div");
     columnElement.className = "tbap-content-column";
 
-    this.pageData.InfoContent.forEach((content: InfoType) => {
+    let i = 0;
+    while (i < this.pageData.InfoContent.length) {
+      const content = this.pageData.InfoContent[i];
       let contentEl: HTMLElement | null = null;
+
       if (content.InfoType === "Images" && content.Images) {
         contentEl = this.renderImage(content);
         console.log("contentEl", contentEl);
       } else if (content.InfoType === "Description" && content.InfoValue) {
         contentEl = this.renderDescription(content);
       } else if (content.InfoType === "Cta" && content.CtaAttributes) {
-        contentEl = this.renderCta(content);
-        // columnElement.appendChild(contentEl);
+        // Check if this is a round button and if there are consecutive round buttons
+        if (content.CtaAttributes.CtaButtonType === "Round") {
+          const ctaGroup: InfoType[] = [content];
+          let j = i + 1;
+
+          // Collect consecutive round CTAs (max 3)
+          while (j < this.pageData.InfoContent.length && 
+                 j < i + 3 && 
+                 this.pageData.InfoContent[j].InfoType === "Cta" &&
+                 this.pageData.InfoContent[j].CtaAttributes?.CtaButtonType === "Round") {
+            ctaGroup.push(this.pageData.InfoContent[j]);
+            j++;
+          }
+
+          // If we have 2-3 consecutive round buttons, render them as a group
+          if (ctaGroup.length >= 2) {
+            contentEl = this.renderCtaGroup(ctaGroup);
+            i = j - 1; // Skip the processed CTAs (will be incremented at end of loop)
+          } else {
+            // Single round button, render normally
+            contentEl = this.renderSingleCta(content);
+          }
+        } else {
+          // Non-round CTA, render normally
+          contentEl = this.renderSingleCta(content);
+        }
       } else if (content.InfoType === "TileRow" && content.Tiles?.length) {
         const rowElement = this.renderTileRow(content);
         columnElement.appendChild(rowElement);
@@ -213,7 +270,9 @@ export class InfoPageMapper {
       if (contentEl) {
         columnElement.appendChild(contentEl);
       }
-    });
+
+      i++;
+    }
 
     container.appendChild(columnElement);
   }
