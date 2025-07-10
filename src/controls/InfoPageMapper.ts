@@ -1,13 +1,6 @@
 import { CtaComponent } from "../components/CtaComponent";
 import { TileComponent } from "../components/TileComponent";
-import { Content } from "../interfaces/Content";
-import { Cta } from "../interfaces/Cta";
-import { PageInfoContentStructure } from "../interfaces/PageInfoContentStructure";
-import { Page } from "../interfaces/Page";
-import { Row } from "../interfaces/Row";
-import { Tile } from "../interfaces/Tile";
-import { InfoType } from "../interfaces/InfoType";
-import { Image } from "../interfaces/Image";
+import { Image, InfoType, Page, PageInfoContentStructure } from "../types";
 
 export class InfoPageMapper {
   pageData: PageInfoContentStructure;
@@ -44,7 +37,7 @@ export class InfoPageMapper {
     // Function to show specific slide with smooth fade
     const showSlide = (index: number) => {
       if (isTransitioning) return; // Prevent overlapping transitions
-      
+
       isTransitioning = true;
       const slides = slideContainer.querySelectorAll(
         ".tbap-img-slide"
@@ -107,7 +100,7 @@ export class InfoPageMapper {
   ): HTMLDivElement {
     const imageElement = document.createElement("div");
     imageElement.className = "tbap-img-slide";
-    
+
     // Set initial opacity and position
     const initialOpacity = index === 0 ? "1" : "0";
     imageElement.style.cssText = `
@@ -170,6 +163,32 @@ export class InfoPageMapper {
     return rowElement;
   }
 
+  private renderGridTiles(row: InfoType): HTMLElement {
+    alert();
+    const hasSingleTile = row.Tiles?.length === 1;
+    const isHighPriorityRow = hasSingleTile;
+
+    const rowElement = document.createElement("div");
+    rowElement.className = "tbap-row";
+    rowElement.id = row.InfoId;
+    if (row.Tiles) {
+      const rowTileLength = row.Tiles.length;
+      row?.Tiles.forEach((tile, index) => {
+        // const isHighPriority = isHighPriorityRow && index === 0;
+        const isHighPriority = isHighPriorityRow;
+        const tileComponent = new TileComponent(
+          tile,
+          isHighPriority,
+          this.pageId,
+          rowTileLength
+        );
+        rowElement.appendChild(tileComponent.getElement());
+      });
+    }
+
+    return rowElement;
+  }
+
   private renderSingleCta(content: InfoType): HTMLElement | null {
     const ctaContainer = document.createElement("div");
     ctaContainer.className = "tbap-cta-container";
@@ -190,8 +209,8 @@ export class InfoPageMapper {
     ctaContainer.className = "tbap-cta-container";
 
     // Check if all CTAs in the group are round buttons
-    const allRoundButtons = ctaGroup.every(content => 
-      content.CtaAttributes?.CtaButtonType === "Round"
+    const allRoundButtons = ctaGroup.every(
+      (content) => content.CtaAttributes?.CtaButtonType === "Round"
     );
 
     // If we have 2-3 consecutive round buttons, render them in a row
@@ -199,7 +218,7 @@ export class InfoPageMapper {
       ctaContainer.classList.add("tbap-cta-container--row");
     }
 
-    ctaGroup.forEach(content => {
+    ctaGroup.forEach((content) => {
       if (content.CtaAttributes) {
         const ctaElement = new CtaComponent(content.CtaAttributes);
         const ctaButton = ctaElement.getCta();
@@ -232,7 +251,6 @@ export class InfoPageMapper {
 
       if (content.InfoType === "Images" && content.Images) {
         contentEl = this.renderImage(content);
-        console.log("contentEl", contentEl);
       } else if (content.InfoType === "Description" && content.InfoValue) {
         contentEl = this.renderDescription(content);
       } else if (content.InfoType === "Cta" && content.CtaAttributes) {
@@ -242,10 +260,13 @@ export class InfoPageMapper {
           let j = i + 1;
 
           // Collect consecutive round CTAs (max 3)
-          while (j < this.pageData.InfoContent.length && 
-                 j < i + 3 && 
-                 this.pageData.InfoContent[j].InfoType === "Cta" &&
-                 this.pageData.InfoContent[j].CtaAttributes?.CtaButtonType === "Round") {
+          while (
+            j < this.pageData.InfoContent.length &&
+            j < i + 3 &&
+            this.pageData.InfoContent[j].InfoType === "Cta" &&
+            this.pageData.InfoContent[j].CtaAttributes?.CtaButtonType ===
+              "Round"
+          ) {
             ctaGroup.push(this.pageData.InfoContent[j]);
             j++;
           }
@@ -264,6 +285,9 @@ export class InfoPageMapper {
         }
       } else if (content.InfoType === "TileRow" && content.Tiles?.length) {
         const rowElement = this.renderTileRow(content);
+        columnElement.appendChild(rowElement);
+      } else if (content.InfoType === "TileGrid" && content.Columns?.length) {
+        const rowElement = this.renderGridTiles(content);
         columnElement.appendChild(rowElement);
       }
 

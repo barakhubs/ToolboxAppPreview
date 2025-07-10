@@ -1,7 +1,7 @@
 import { ThemeManager } from "../controls/ThemeManager";
 import { TileController } from "../controls/TileController";
-import { NavigationData } from "../interfaces/Navigation";
-import { Tile } from "../interfaces/Tile";
+import { NavigationData, Tile } from "../types";
+
 
 
 export class TileComponent {
