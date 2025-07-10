@@ -1,6 +1,6 @@
 import { CtaComponent } from "../components/CtaComponent";
 import { TileComponent } from "../components/TileComponent";
-import { Image, InfoType, Page, PageInfoContentStructure } from "../types";
+import { Column, Image, InfoType, Page, PageInfoContentStructure, Tile } from "../types";
 
 export class InfoPageMapper {
   pageData: PageInfoContentStructure;
@@ -163,30 +163,47 @@ export class InfoPageMapper {
     return rowElement;
   }
 
-  private renderGridTiles(row: InfoType): HTMLElement {
-    alert();
-    const hasSingleTile = row.Tiles?.length === 1;
-    const isHighPriorityRow = hasSingleTile;
+  private renderGridTiles(infoContent: InfoType): HTMLElement {
+    const columns = infoContent.Columns || [];
+    const tileGrid = document.createElement("div");
+    tileGrid.className = "tile-grid-section";
 
-    const rowElement = document.createElement("div");
-    rowElement.className = "tbap-row";
-    rowElement.id = row.InfoId;
-    if (row.Tiles) {
-      const rowTileLength = row.Tiles.length;
-      row?.Tiles.forEach((tile, index) => {
-        // const isHighPriority = isHighPriorityRow && index === 0;
-        const isHighPriority = isHighPriorityRow;
+    columns?.forEach((column: Column) => {
+      const tiles = column.Tiles || [];
+
+      const columnHeightStyle =
+        tiles.length === 1
+          ? `min-height: 100%;`
+          : `min-height: ${80 * tiles.length}px`;
+
+      // Create column container
+      const columnDiv = document.createElement("div");
+      columnDiv.style.cssText = `
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            ${columnHeightStyle}
+        `;
+
+      // Add tiles to column
+      tiles.forEach((tile: Tile, tileIndex: number) => {
         const tileComponent = new TileComponent(
           tile,
-          isHighPriority,
+          false,
           this.pageId,
-          rowTileLength
+          tiles.length
         );
-        rowElement.appendChild(tileComponent.getElement());
-      });
-    }
 
-    return rowElement;
+        // Append the actual DOM element (not outerHTML)
+        columnDiv.appendChild(tileComponent.getElement());
+      });
+
+      // Add column to grid
+      tileGrid.appendChild(columnDiv);
+    });
+
+    return tileGrid;
   }
 
   private renderSingleCta(content: InfoType): HTMLElement | null {
