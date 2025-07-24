@@ -138,3 +138,8 @@ export interface TileAction {
   ObjectType: string;
   ObjectUrl: string;
 }
+
+export interface Icon {
+  name: string;
+  svg: string;
+}

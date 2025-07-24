@@ -1,3 +1,5 @@
+import { Icon } from "../types";
+import { tileIcons } from "../utils/tile-icons";
 import { AppVersionManager } from "./AppVersionManager";
 
 export class ThemeManager {
@@ -13,7 +15,7 @@ export class ThemeManager {
   }
 
   getThemeIcons() {
-    return this.version.theme?.Icons;
+    return tileIcons;
   }
 
   getThemeColors() {
@@ -41,8 +43,8 @@ export class ThemeManager {
 
   getThemeIcon(iconName: string) {
     return this.getThemeIcons()?.find(
-      (icon) =>
-        icon.IconName.toLocaleLowerCase() === iconName.toLocaleLowerCase()
-    )?.IconSVG;
+      (icon: Icon) =>
+        icon.name.toLocaleLowerCase() === iconName.toLocaleLowerCase()
+    )?.svg;
   }
 }

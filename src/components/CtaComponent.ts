@@ -115,7 +115,7 @@ export class CtaComponent {
 
     getIcon(): string {
         if (this.cta.CtaButtonIcon) {
-          const svg = ctaIcons.find(icon => icon.name === this.cta.CtaButtonIcon)?.svg;
+          const svg = ctaIcons.find((icon: { name: string, svg: string }) => icon.name === this.cta.CtaButtonIcon)?.svg;
           const tempElement = document.createElement('div') as HTMLElement;
           tempElement.innerHTML = svg || ``;
           const newSvgElement = tempElement.querySelector('svg');
