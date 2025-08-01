@@ -5,6 +5,7 @@ export interface AppVersion {
     Pages: Page[];
     SDT_Theme: any;
     OrganisationLogo :string;
+    VersionLanguage: string;
 }
 
 export interface Colors {

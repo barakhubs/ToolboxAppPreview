@@ -57,9 +57,7 @@ export class TileComponent {
         icon.classList.add("tile-icon");
         icon.style.color = this.tile.Color;
         if (this.tile.Icon) {
-            console.log('this.tile.icon', this.tile.Icon)
             const themeIcon = this.themeManager.getThemeIcon(this.tile.Icon);
-            console.log('themeIcon', themeIcon)
             if (themeIcon) {
                 icon.innerHTML = themeIcon;
             }
@@ -97,7 +95,8 @@ export class TileComponent {
         });
     }
 
-    private wrapTileTitle(title: any) {        
+    private wrapTileTitle(title: any) { 
+        console.log('title', title);       
         if (this.rowTileLength === 3) {
             const words = title.split(" ");
             if (words.length > 1) {

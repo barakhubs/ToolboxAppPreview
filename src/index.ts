@@ -2,7 +2,7 @@ import { ToolboxPreview } from "./app";
 import { AppVersionManager } from "./controls/AppVersionManager";
 import { AppVersion } from "./types";
 
-class PreviewApp {
+export class PreviewApp {
   constructor(
     appVersion: AppVersion
   ) {
